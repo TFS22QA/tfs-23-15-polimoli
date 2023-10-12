@@ -1,7 +1,8 @@
 package generators;
 
+import person.models.FullName;
 import person.models.Param;
 
 public interface Generator {
-    Param Generate(int code);
+    Param generate(final int code);
 }
