@@ -13,6 +13,7 @@ import static utils.FileReader.getLinesFromFile;
 import static utils.MyMath.getDigitsSum;
 
 public class ParamGenerator {
+    private static int MINIMUM_WEIGHT = 30;
 
     /**
      * по третьей цифре кода:
@@ -22,41 +23,41 @@ public class ParamGenerator {
      *
      * @return .
      */
-    public Appearance gen_Ap(final int c) {
-        final int i = c % 100 / 10;
-        String e = EyesColor.values()[i / 2].name().toLowerCase();
-        String hc = null;
-        if (i > 0) {
-            hc = HairColor.values()[i - 1].name().toLowerCase();
+    public Appearance appearanceGeneration(final int code) {
+        final int thirdDigit = code % 100 / 10;
+        String eyes = EyesColor.values()[thirdDigit / 2].name().toLowerCase();
+        String hairColour = null;
+        if (thirdDigit > 0) {
+            hairColour = HairColor.values()[thirdDigit - 1].name().toLowerCase();
         }
-        return new Appearance(e, new Hair(i, hc));
+        return new Appearance(eyes, new Hair(thirdDigit, hairColour));
     }
 
     /**
      * сумма цифр в коде.
      */
-    public String lngeneration(final int c) {
-        final int i = getDigitsSum(c);
-        final String s = (i % 2 == 0) ? "f" : "m";
-        return getLinesFromFile("lastNames_" + s).get(i);
+    public String lastNameGeneration(final int code) {
+        final int digitSum = getDigitsSum(code);
+        final String s = (digitSum % 2 == 0) ? "f" : "m";
+        return getLinesFromFile("lastNames_" + s).get(digitSum);
     }
 
     /**
      * сумма первых двух цифр.
      */
-    public String fngeneration(final int c) {
-        final int i = getDigitsSum(c);
-        final String s = (i % 2 == 0) ? "f" : "m";
-        return getLinesFromFile("names_" + s).get(getDigitsSum(c / 100));
+    public String FirstNameGeneration(final int code) {
+        final int digitSum = getDigitsSum(code);
+        final String sex = (digitSum % 2 == 0) ? "f" : "m";
+        return getLinesFromFile("names_" + sex).get(getDigitsSum(code / 100));
     }
 
     /**
      * сумма последних двух цифр.
      */
-    public String mngeneration(final int c) {
-        final int i = getDigitsSum(c);
-        final String s = (i % 2 == 0) ? "f" : "m";
-        return getLinesFromFile("middleNames_" + s).get(getDigitsSum(c % 100));
+    public String MiddleNameGeneration(final int code) {
+        final int digitSum = getDigitsSum(code);
+        final String sex = (digitSum % 2 == 0) ? "f" : "m";
+        return getLinesFromFile("middleNames_" + sex).get(getDigitsSum(code % 100));
     }
 
     /**
@@ -65,23 +66,23 @@ public class ParamGenerator {
      * Вес: 30..120
      * Рост: 1..1,9
      */
-    public Physical GenPh(final int c) {
-        final int x = c % 1000 / 100;
-        int v = (x + 1) * 10;
-        int k = 30 + x * 10;
-        double naskolkovysokiychelovek = (100 + x * 10) / 100.00;
-        return new Physical(v, k, naskolkovysokiychelovek);
+    public Physical GeneratePhysics(final int code) {
+        final int secondDigit = code % 1000 / 100;
+        int personAge = (secondDigit + 1) * 10;
+        int personWeight = MINIMUM_WEIGHT + secondDigit * 10;
+        double personHeight = (100 + secondDigit * 10) / 100.00;
+        return new Physical(personAge, personWeight, personHeight);
     }
 
     /**
      * Генерация номера паспорта.
      *
-     * @param c код
+     * @param code код
      * @return номер паспорта
      */
-    public Passport pNumGen(final int c) {
-        final int d = 999999;
-        final String pn = String.valueOf(c) + new Random().nextInt(d);
-        return new Passport(pn);
+    public Passport passNumGen(final int code) {
+        final int maxNumber = 999999;
+        final String passportNumber = String.valueOf(code) + new Random().nextInt(maxNumber);
+        return new Passport(passportNumber);
     }
 }
