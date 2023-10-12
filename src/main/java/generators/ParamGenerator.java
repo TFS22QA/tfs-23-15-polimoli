@@ -36,6 +36,7 @@ public class ParamGenerator {
     /**
      * сумма цифр в коде.
      */
+
     public String lastNameGeneration(final int code) {
         final int digitSum = getDigitsSum(code);
         final String s = (digitSum % 2 == 0) ? "f" : "m";
